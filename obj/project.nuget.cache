@@ -1,0 +1,20 @@
+{
+  "version": 2,
+  "dgSpecHash": "LO7xGdyaU9RyuwAaGC95dCP+FNiZYjppHveqIoN/LA012zvtT+OHbpL2mpH81tACfWIx7ot/u5fyooSY754I9g==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\SGA\\repos\\gcom_tests\\azure-webpubsub\\samples\\csharp\\chatapp-net6\\chatapp.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\SGA\\.nuget\\packages\\azure.core\\1.21.0\\azure.core.1.21.0.nupkg.sha512",
+    "C:\\Users\\SGA\\.nuget\\packages\\azure.messaging.webpubsub\\1.0.0\\azure.messaging.webpubsub.1.0.0.nupkg.sha512",
+    "C:\\Users\\SGA\\.nuget\\packages\\microsoft.azure.webpubsub.aspnetcore\\1.0.0-beta.3\\microsoft.azure.webpubsub.aspnetcore.1.0.0-beta.3.nupkg.sha512",
+    "C:\\Users\\SGA\\.nuget\\packages\\microsoft.azure.webpubsub.common\\1.1.0\\microsoft.azure.webpubsub.common.1.1.0.nupkg.sha512",
+    "C:\\Users\\SGA\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.0.0\\microsoft.bcl.asyncinterfaces.1.0.0.nupkg.sha512",
+    "C:\\Users\\SGA\\.nuget\\packages\\system.diagnostics.diagnosticsource\\4.6.0\\system.diagnostics.diagnosticsource.4.6.0.nupkg.sha512",
+    "C:\\Users\\SGA\\.nuget\\packages\\system.memory.data\\1.0.2\\system.memory.data.1.0.2.nupkg.sha512",
+    "C:\\Users\\SGA\\.nuget\\packages\\system.numerics.vectors\\4.5.0\\system.numerics.vectors.4.5.0.nupkg.sha512",
+    "C:\\Users\\SGA\\.nuget\\packages\\system.text.encodings.web\\4.7.2\\system.text.encodings.web.4.7.2.nupkg.sha512",
+    "C:\\Users\\SGA\\.nuget\\packages\\system.text.json\\4.7.2\\system.text.json.4.7.2.nupkg.sha512",
+    "C:\\Users\\SGA\\.nuget\\packages\\system.threading.tasks.extensions\\4.5.4\\system.threading.tasks.extensions.4.5.4.nupkg.sha512"
+  ],
+  "logs": []
+}
