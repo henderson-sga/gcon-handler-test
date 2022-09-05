@@ -29,7 +29,7 @@ app.UseEndpoints(endpoints =>
             return;
         }
         var webpsInstance = serviceClient.GetClientAccessUri(userId: id); 
-        await context.Response.WriteAsync(webps.GetClientAccessUri());
+        await context.Response.WriteAsync(webpsInstance.AbsoluteUri);
     });
 
     endpoints.MapWebPubSubHub<Sample_ChatApp>("/eventhandler/{*path}");

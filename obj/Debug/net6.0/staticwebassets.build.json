@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "dUV2a2OfD8mdvHXB8IcRoN1jkAvoGPcHHGOX23KQ/CE=",
+  "Hash": "whYW3nXhV1GrADMhgUDZkG+4ZW7yWZEYnRBDY49CK/8=",
   "Source": "chatapp",
   "BasePath": "_content/chatapp",
   "Mode": "Default",
@@ -16,23 +16,6 @@
     }
   ],
   "Assets": [
-    {
-      "Identity": "C:\\Users\\SGA\\repos\\gcom_tests\\azure-webpubsub\\samples\\csharp\\chatapp-net6\\wwwroot\\.index.html.swp",
-      "SourceId": "chatapp",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\SGA\\repos\\gcom_tests\\azure-webpubsub\\samples\\csharp\\chatapp-net6\\wwwroot\\",
-      "BasePath": "_content/chatapp",
-      "RelativePath": ".index.html.swp",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\.index.html.swp"
-    },
     {
       "Identity": "C:\\Users\\SGA\\repos\\gcom_tests\\azure-webpubsub\\samples\\csharp\\chatapp-net6\\wwwroot\\index.html",
       "SourceId": "chatapp",
