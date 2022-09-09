@@ -2,33 +2,75 @@
 <html>
 
 <body>
-    <h1>Azure Web PubSub Chat</h1>
-    <input id="message" placeholder="Type to chat...">
+    <h3>Messager</h3>
+    <div id="userInfo">
+      <h1>Add Your Name</h1>
+      <input id="userName" placeholder="Type your name" />
+      <button onclick="cnnWS()">Connect</button>
+    </div>
+    <div id="messager" style="display:none;">
+      <h1>Type Your Message to the Others</h1>
+      <input id="message" placeholder="Type to chat...">
+      <button id="sendMessage" onclick="sendMessage()">send</button>
+    </div>
+
+    <div id="messagesArea" style="margin-top: 30px">
+      
+    </div>
+
     <div id="messages"></div>
     <script>
-    (async function () {
-        let id = prompt('Please input your user name');
-        let res = await fetch(`/negotiate?id=${id}`);
-        let url = await res.text();
-        console.log(url);
-        let ws = new WebSocket(url);
-        ws.onopen = () => console.log('connected');
-      ws.onclose = (e, msg) => console.log('closed, e: ', msg);
 
-        let messages = document.querySelector('#messages');
-        ws.onmessage = event => {
-            let m = document.createElement('p');
-            m.innerText = event.data;
-            messages.appendChild(m);
-        };
+      var ws = null;
+      var userName = null;
+      var userInfoDIV = null;
+      var messagerForm = null;
+      var messagesArea = null;
 
-        let message = document.querySelector('#message');
-        message.addEventListener('keypress', e => {
-            if (e.charCode !== 13) return;
-            ws.send(message.value);
-            message.value = '';
-        });
-    })();
+      function getTags() {
+        userName = document.getElementById("userName").value;
+        userInfoDIV = document.getElementById("userInfo");
+        messagerForm = document.getElementById("messager");
+      }
+
+      function printUsersMessages(event) {
+        messagesArea = document.getElementById("messagesArea");
+        var newMessage = document.createElement("p");
+        newMessage.innerText = event.data;
+        messagesArea.appendChild(newMessage);
+      }
+
+      async function cnnWS() {
+
+        // get tag values
+        getTags();
+
+        // check if the user name is empty
+        if (!userName)
+          return;
+
+        // get the ws connection string
+        let res = await fetch(`/connectionString?id=${userName}`);
+        url = await res.text();
+
+        // create the websocket connection
+        ws = new WebSocket(url);
+        ws.onopen = console.log;
+        ws.onmessage = printUsersMessages;
+        ws.onerror = console.log;
+        ws.onclose = console.log;
+
+        // hide the user's info form
+        userInfoDIV.style.display = "none";
+        messager.style.display = "block";
+      }
+
+      function sendMessage() {
+        var msgTxt = document.getElementById("message").value;
+        //var data = { from: userName, data: msgTxt, type: "message" };
+        var data = msgTxt;
+        ws.send(JSON.stringify(data));
+      }
     </script>
 </body>
 
