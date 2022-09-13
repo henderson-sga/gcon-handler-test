@@ -1,43 +1,161 @@
 
 <html>
+<head>
+  <style>
+    html {
+      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+      margin: 0px;
+      padding: 0px;
+    }
+    body {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 0px;
+      padding: 0px; 
+    }
+
+    #store-name {
+      width: 100%;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #e1e1e1;
+    }
+
+    #store-title {
+      margin: 0px;
+      margin-left: 20px;
+      color: #777;
+    }
+
+    #container {
+      width: 50%;
+      height: 80%;
+      padding: 30px;
+      border: 3px solid #444;
+      border-radius: 10px;
+    }
+
+    .input-area {
+      width: 100%;
+      height: 100px;
+      display: flex;
+      align-items: center;
+      /*background: #e0bdbd;*/
+    }
+
+    .input-area input {
+      width: 80%;
+      border: 1px solid #a1a1a1;
+      border-radius: 3px;
+      margin-right: 30px;
+      padding: 15px 10px 12px 14px;
+      font-size: 20px;
+    }
+
+    .input-area button {
+      width: 110px;
+      border: none;
+      padding: 15px;
+      border-radius: 5px;
+      background: #ff0000;
+      color: #fff;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .input-area button:hover {
+      background: #f00000;
+    }
+
+    #messager {
+      flex-direction: column;
+    }
+
+    #messages-area {
+      overflow-y: scroll;
+      overflow-x: hidden;
+      width: 100%;
+      max-width: 100%;
+      height: 65%;
+      margin-top: 20px;
+      background: #fcfcfc8f;
+    }
+
+    .message-block {
+      width: 100%;
+      height: 40px;
+      /*background: #fafafa;*/
+      padding: 10px 0px 5px 10px;
+      font-weight: 600;
+    }
+
+    #messages-area .message-block:nth-child(1) {
+      font-size: 22px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #f1f1f1;
+      text-align: center;
+    }
+
+  </style>
+</head>
 
 <body>
-    <h3>Messager</h3>
-    <div id="userInfo">
-      <h1>Add Your Name</h1>
-      <input id="userName" placeholder="Type your name" />
-      <button onclick="cnnWS()">Connect</button>
+  <div id="store-name">
+    <h1 id="store-title" >Loja</h1>
+  </div>
+  <div id="container">
+    <div id="store-info">
+      <h1>Adicione Sua Loja</h1>
+      <div class="input-area">
+        <input id="user-name" placeholder="Type your name" />
+        <button onclick="cnnWS()">Adicionar</button>
+      </div>
     </div>
     <div id="messager" style="display:none;">
-      <h1>Type Your Message to the Others</h1>
-      <input id="message" placeholder="Type to chat...">
-      <button id="sendMessage" onclick="sendMessage()">send</button>
+      <h1>Crie Um Pedido</h1>
+      <div class="input-area">
+        <input id="message" placeholder="Type to chat...">
+        <button id="sendMessage" onclick="sendMessage()">Criar</button>
+      </div>
     </div>
 
-    <div id="messagesArea" style="margin-top: 30px">
-      
+    <div id="messages-area">
+      <!--<div class="message-block"><p>Loja spoleto002 adicionada!...</p></div>-->
     </div>
 
-    <div id="messages"></div>
+  </div>
     <script>
 
       var ws = null;
       var userName = null;
-      var userInfoDIV = null;
+      var storeInfoDIV = null;
       var messagerForm = null;
       var messagesArea = null;
 
       function getTags() {
-        userName = document.getElementById("userName").value;
-        userInfoDIV = document.getElementById("userInfo");
+        userName = document.getElementById("user-name").value;
+        storeInfoDIV = document.getElementById("store-info");
         messagerForm = document.getElementById("messager");
       }
 
       function printUsersMessages(event) {
-        messagesArea = document.getElementById("messagesArea");
-        var newMessage = document.createElement("p");
-        newMessage.innerText = event.data;
-        messagesArea.appendChild(newMessage);
+        messagesArea = document.getElementById("messages-area");
+
+        var messageBlock = document.createElement("div");
+        var messageTxt = document.createElement("p");
+
+        messageBlock.classList.add("message-block");
+        messageTxt.innerText = event.data;
+
+        messageBlock.appendChild(messageTxt);
+        messagesArea.appendChild(messageBlock);
       }
 
       async function cnnWS() {
@@ -61,8 +179,8 @@
         ws.onclose = console.log;
 
         // hide the user's info form
-        userInfoDIV.style.display = "none";
-        messager.style.display = "block";
+        storeInfoDIV.style.display = "none";
+        messager.style.display = "flex";
       }
 
       function sendMessage() {

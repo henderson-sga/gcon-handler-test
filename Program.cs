@@ -1,6 +1,7 @@
 using Microsoft.Azure.WebPubSub.AspNetCore;
 using Microsoft.Azure.WebPubSub.Common;
 using Microsoft.Extensions.Azure;
+using System.Diagnostics;
 using System.Text.Json;
 using System.Web;
 
@@ -35,6 +36,17 @@ app.UseEndpoints(endpoints =>
         await context.Response.WriteAsync(webpsInstance.AbsoluteUri);
     });
 
+    endpoints.MapMethods("/message", new List<string> { "POST", "OPTIONS" }.AsEnumerable(), async (WebPubSubServiceClient<sample_chat> serviceClient, HttpContext context) => 
+    {
+      if (context.Request.Body != null)
+      {
+        var bodyString = new StreamReader(context.Request.Body).ReadToEnd();
+      }
+
+      await context.Response.WriteAsync("OK");
+      return;
+    });
+
     endpoints.MapWebPubSubHub<sample_chat>("/handler");
 });
 
@@ -52,29 +64,40 @@ sealed class sample_chat : WebPubSubHub
 
     public override async Task OnConnectedAsync(ConnectedEventRequest request)
     {
-        await _serviceClient.SendToAllAsync($"[FROM HANDLER] {request.ConnectionContext.UserId} joined.");
+        await _serviceClient.SendToUserAsync(request.ConnectionContext.UserId, $"Loja {request.ConnectionContext.UserId.ToUpper()} adicionada!...");
     }
 
     public override async ValueTask<UserEventResponse> OnMessageReceivedAsync(UserEventRequest request, CancellationToken cancellationToken)
     {
-        var httpClient = new HttpClient();
+        Stopwatch timeWatch = new Stopwatch();
+
+        timeWatch.Start();
+
+        async Task storeInCosmosDB()
+        {
+          var httpClient = new HttpClient();
       
-        var httpRequest = new HttpRequestMessage();
+          var httpRequest = new HttpRequestMessage();
 
-        httpRequest.Method = HttpMethod.Post;
+          httpRequest.Method = HttpMethod.Post;
 
-        httpRequest.RequestUri = new Uri(azFuncEndpoint);
+          httpRequest.RequestUri = new Uri(azFuncEndpoint);
 
-        var UserId= request.ConnectionContext.UserId;
-        var hub = request.ConnectionContext.Hub;
-        var message = request.Data.ToString().Replace('"', ' ').Trim();
+          var UserId= request.ConnectionContext.UserId;
+          var hub = request.ConnectionContext.Hub;
+          var message = request.Data.ToString().Replace('"', ' ').Trim();
 
-        httpRequest.Content = new StringContent(JsonSerializer.Serialize(new { data = message, user = UserId, hub = hub }));
+          httpRequest.Content = new StringContent(JsonSerializer.Serialize(new { data = message, user = UserId, hub = hub }));
 
-        await httpClient.SendAsync(httpRequest);
+          await httpClient.SendAsync(httpRequest);
+        };
 
-        await _serviceClient.SendToAllAsync($"[{request.ConnectionContext.UserId}] {request.Data}");
+        await storeInCosmosDB();
 
-        return request.CreateResponse($"[FROM HANDLER] ack.");
+        await _serviceClient.SendToUserAsync(request.ConnectionContext.UserId, $"{request.ConnectionContext.UserId.ToUpper()} adicionou um novo pedido: {request.Data}");
+
+        timeWatch.Stop();
+
+        return request.CreateResponse($"finalizado em: {(decimal)timeWatch.Elapsed.TotalSeconds}s");
     }
 }
