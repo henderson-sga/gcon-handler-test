@@ -17,6 +17,84 @@
       padding: 0px; 
     }
 
+    .menu-button {
+      width: 30px;
+      height: 30px;
+      margin-left: 20px;
+      cursor: pointer;
+      transition: .5s;
+    }
+
+    .menu-button.close {
+        margin: 0;
+        margin-left: auto;
+        margin-right: 30px;
+    }
+
+    #side-menu {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 300px;
+      height: 100vh;
+      transition: .5s;
+      transform: translateX(-300px);
+    }
+
+    #side-menu-header {
+      width: 100%;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid #e1e1e1;
+    }
+
+      #open-menu {
+          background-size: cover;
+          width: 30px;
+          height: 30px;
+          border: none;
+          /*background-image: url("https://thumbs.dreamstime.com/b/menu-icon-simple-flat-style-ui-design-menu-icon-simple-flat-style-ui-design-107275006.jpg");*/
+          background-image: url("https://cdn.iconscout.com/icon/free/png-256/justify-2693459-2235275.png");
+          z-index: 1;
+      }
+
+      #side-menu.opened {
+          background: #f0f0f0;
+          transform: translateX(0px);
+      }
+
+      #open-menu.opened {
+          transform: translateX(150px);
+      }
+
+    #open-menu:checked {
+      z-index: 2;
+      transform: translateX(140px);
+    }
+
+    #close-menu:checked {
+      transform: translateX(-300px);
+    }
+
+    #menu-options {
+        height: 400px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    #menu-options {
+        padding-top: 10px;
+    }
+
+    #menu-options a {
+        cursor: pointer;
+    }
+
+    #menu-options :first-child {
+        border-bottom: 1px solid #d0d0d0;
+    }
+
     #store-name {
       width: 100%;
       height: 50px;
@@ -26,35 +104,49 @@
       border-bottom: 1px solid #e1e1e1;
     }
 
-    #store-title {
+    .store-title {
       margin: 0px;
       margin-left: 20px;
       color: #777;
     }
 
     #container {
-      width: 50%;
+      width: 80%;
       height: 80%;
       padding: 30px;
       border: 3px solid #444;
       border-radius: 10px;
+      display: flex;
+    }
+
+    #order-container {
+        display: flex;
+        width: 100%;
+        height: 100%;
     }
 
     .input-area {
-      width: 100%;
+      width: 90%;
       height: 100px;
       display: flex;
+      flex-direction: column;
       align-items: center;
       /*background: #e0bdbd;*/
     }
 
-    .input-area input {
+    .input-area input, .input-area select {
       width: 80%;
       border: 1px solid #a1a1a1;
       border-radius: 3px;
+      margin-top: 30px;
       margin-right: 30px;
       padding: 15px 10px 12px 14px;
       font-size: 20px;
+    }
+
+    #req-type {
+        margin-bottom: 30px;
+        border: none;
     }
 
     .input-area button {
@@ -72,8 +164,22 @@
       background: #f00000;
     }
 
-    #messager {
+    #order-form {
+      width: 50%;
+      height: 100%;
       flex-direction: column;
+    }
+
+    #all-orders {
+        width: 50%;
+        height: 100%;
+        padding-left: 80px;
+    }
+
+    #orders {
+        overflow-y: scroll;
+        width: 100%;
+        height: 80%;
     }
 
     #messages-area {
@@ -89,107 +195,331 @@
     .message-block {
       width: 100%;
       height: 40px;
-      /*background: #fafafa;*/
-      padding: 10px 0px 5px 10px;
+      background: #fafafa;
       font-weight: 600;
+      display: flex;
     }
 
-    #messages-area .message-block:nth-child(1) {
-      font-size: 22px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: #f1f1f1;
-      text-align: center;
+    .message-block p {
+        display: flex;
+        padding-left: 20px;
+        font-size: 13px;
+    }
+
+      .message-block.ack-message {
+          border-bottom: 1px solid #444;
+          padding: 5px 0px;
+      }
+
+      .message-block.order-message {
+          padding: 20px 0px 0px 0px;
+      }
+
+      #messages-area .message-block:nth-child(1) {
+          font-size: 22px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background: #f1f1f1;
+          text-align: center;
+      }
+
+    #db-visualizer {
+        width: 100%;
+        min-height: 50px;
+        border: 1px solid #000;
+        cursor: pointer;
+    }
+
+    .link {
+        font-size: 18px;
+        text-decoration: none;
+        color: #585858;
+        padding: 15px 0;
+        padding-left: 30px;
+    }
+
+    .row code {
+    }
+    .key {
+        color: #a31515;
+    }
+    .string {
+        color: #0451a5;
+    }
+    .boolean {
+        color: black;
     }
 
   </style>
 </head>
 
 <body>
+    
+
   <div id="store-name">
-    <h1 id="store-title" >Loja</h1>
+    <h1 class="store-title" >Loja</h1>
+    <div id="open-menu" onclick="openMenu()" class="menu-button open"></div>
+    <div id="side-menu">
+        <div id="side-menu-header">
+            <h1 class="store-title">Loja</h1>
+        </div>
+        <div id="menu-options">
+            <a href="?menu=order" class="link" id="send-order">
+                Criar ou Atualizar Pedido
+            </a>
+            <a target="_blank" href="/dbData" class="link" id="visualize-database">
+                Visualizar Database
+            </a>
+        </div>
+    </div>
   </div>
+
+
   <div id="container">
-    <div id="store-info">
-      <h1>Adicione Sua Loja</h1>
-      <div class="input-area">
-        <input id="user-name" placeholder="Type your name" />
-        <button onclick="cnnWS()">Adicionar</button>
-      </div>
-    </div>
-    <div id="messager" style="display:none;">
-      <h1>Crie Um Pedido</h1>
-      <div class="input-area">
-        <input id="message" placeholder="Type to chat...">
-        <button id="sendMessage" onclick="sendMessage()">Criar</button>
-      </div>
+    
+    <div id="order-container">
+        <div id="order-form">
+          <h1>Crie Um Pedido</h1>
+          <div class="input-area">
+            <div>
+               <input id="order-id" placeholder="Pedido ID">
+               <input id="customer-id" placeholder="Cliente ID">
+               <input id="new-status" placeholder="Status">
+               <select id="req-type">
+                   <option value="create">Criar Pedido</option>
+                   <option value="update">Atualizar Pedido</option>
+               </select>
+            </div>
+            <button id="sendMessage" onclick="onSendHandler()">Enviar</button>
+          </div>
+        </div>
+
+        <div id="all-orders">
+            <h1>Pedidos</h1>
+            <div id="orders">
+            </div>
+        </div>
     </div>
 
-    <div id="messages-area">
-      <!--<div class="message-block"><p>Loja spoleto002 adicionada!...</p></div>-->
-    </div>
+     <div id="db-visualizer"></div>
 
   </div>
-    <script>
 
-      var ws = null;
-      var userName = null;
-      var storeInfoDIV = null;
-      var messagerForm = null;
+
+    <script async >
+// ---------------------------------- CONNECTION ------------------------------
+ 
+        var ws = null;
+        var reqType = null;
+        var customerId = null;
+        var orderId = null;
+        var newStatus = null;
+        var storeId = "spoleto001";
+
+        async function getCnnString() {
+            let res = await fetch(`/connectionString?id=${storeId}`);
+            url = await res.text();
+            return url;
+        }
+
+        async function cnnWS() {
+            getTagsInputValues();
+
+            if (!storeId)
+                return;
+
+            var url = await getCnnString();
+
+            // create the websocket connection
+            ws = new WebSocket(url);
+            //ws.onopen = console.log;
+            ws.onmessage = onMessageHandler;
+            ws.onerror = console.log;
+            ws.onclose = console.log;
+        }
+        cnnWS();
+
+
+// ---------------------------------- FIRST SCREEN ------------------------------
+
+
+
+//      var visualizeDb = getElement("visualize-database");
+//      var sendOrder = getElement("send-order");
+
+        function openMenu() {
+            var sideMenu = document.getElementById("side-menu");
+            var openMenu = document.getElementById("open-menu");
+            sideMenu.classList.toggle("opened");
+            openMenu.classList.toggle("opened");
+        }
+
+        function getElement(id) {
+            return document.getElementById(id);
+        }
+
+        function switchMenus () {
+            var visualizeDbSection = document.getElementById("db-visualizer");
+            var sendOrderArea = document.getElementById("order-form");
+            var menuSection = new URLSearchParams(window.location.search).get("menu");
+            if (menuSection == "db") {
+                sendOrderArea.style.display = "none";
+                visualizeDbSection.style.display = "flex";
+            } 
+            else {
+                visualizeDbSection.style.display = "none";
+                sendOrderArea.style.display = "flex";
+            }
+        }
+        switchMenus();
+
+
+ //     function openDbVisualizer() {}
+ //     function openOrderSender() {}
+
+ //     function setMenuEvents() {
+ //       visualizeDb.onclick = openDbVisualizer; 
+ //       sendOrder.onclick = openOrderSender;
+ //     }
+ //     setMenuEvents();
+
       var messagesArea = null;
 
-      function getTags() {
-        userName = document.getElementById("user-name").value;
-        storeInfoDIV = document.getElementById("store-info");
-        messagerForm = document.getElementById("messager");
+      function getTagsInputValues() {
+        reqType = document.getElementById("req-type").value;
+        customerId = document.getElementById("customer-id").value;
+        orderId = document.getElementById("order-id").value;
+        newStatus = document.getElementById("new-status").value;
       }
 
-      function printUsersMessages(event) {
-        messagesArea = document.getElementById("messages-area");
+    function printUsersMessages(resMsg) {
+        var ordersView = document.getElementById("orders")
+        let newOrder = `
+            <div class="message-block ack-message">
+                <p>${resMsg}</p>
+            </div>
+        `
+        ordersView.innerHTML = ordersView.innerHTML + newOrder 
+    }
 
-        var messageBlock = document.createElement("div");
-        var messageTxt = document.createElement("p");
+    function printOrder(data) {
+        var ordersView = document.getElementById("orders")
+        let newOrder = `
+            <div class="message-block order-message">
+                <p>Pedido: &nbsp <b>${data.orderId}</b> </p>
+                <p>Pedido: &nbsp <b>${data.customerId}</b> </p>
+                <p>Status: &nbsp <b>${data.status}</b> </p>
+            </div>
+        `
+        ordersView.innerHTML = ordersView.innerHTML + newOrder
+    }
 
-        messageBlock.classList.add("message-block");
-        messageTxt.innerText = event.data;
 
-        messageBlock.appendChild(messageTxt);
-        messagesArea.appendChild(messageBlock);
+
+
+    function onMessageHandler(event) {
+        var jsonData = JSON.parse(event.data);
+        if (jsonData.data.message) {
+            return printUsersMessages(jsonData.data.message);
+        }
+        console.log(jsonData.data)
+        return printOrder(jsonData.data);
+    }
+
+
+
+      function onSendHandler() {
+        sendMessage(reqType, customerId, orderId, newStatus);
       }
 
-      async function cnnWS() {
-
-        // get tag values
-        getTags();
-
-        // check if the user name is empty
-        if (!userName)
-          return;
-
-        // get the ws connection string
-        let res = await fetch(`/connectionString?id=${userName}`);
-        url = await res.text();
-
-        // create the websocket connection
-        ws = new WebSocket(url);
-        ws.onopen = console.log;
-        ws.onmessage = printUsersMessages;
-        ws.onerror = console.log;
-        ws.onclose = console.log;
-
-        // hide the user's info form
-        storeInfoDIV.style.display = "none";
-        messager.style.display = "flex";
+      function sendMessage(type, _customerId, _orderId, _status, message = null) {
+        console.log(type)
+        var payload = {
+          type: type,
+          data: {
+            message: message,
+            customerId: _customerId,
+            storeId: storeId,
+            orderId: _orderId,
+            status: _status,
+          }
+        };
+        ws.send(JSON.stringify(payload));
       }
 
-      function sendMessage() {
-        var msgTxt = document.getElementById("message").value;
-        //var data = { from: userName, data: msgTxt, type: "message" };
-        var data = msgTxt;
-        ws.send(JSON.stringify(data));
-      }
+
+
+// -------------------- SECOND SCREEN --------------------------------
+
+
+        async function fetchDbData() {
+            var res = await fetch("/dbData");
+            var json = await res.json();
+            return json;
+        }
+        async function fillVisualizeDbSection() {
+
+            var dbData = await fetchDbData();
+
+            for (let d of dbData) {
+                var identedJson = syntaxHighlight(d);
+                var el = createThoseElements(identedJson);
+                document.getElementById("db-visualizer").appendChild(el);
+            }
+        };
+        fillVisualizeDbSection()
+
+
+        function createThoseElements(data) {
+            var rowElement = document.createElement("div");
+            var dataSection = document.createElement("code");
+
+            dataSection.innerHTML = data;
+            rowElement.appendChild(dataSection);
+
+            rowElement.classList.add("row");
+            dataSection.classList.add("data-section");
+            dataSection.setAttribute("id", "json-display")
+
+            return rowElement;
+        }
+
+        function addClassWhenClick() {
+            this.classList.toggle("open");
+        }
+
+function syntaxHighlight(json) {
+    if (typeof json != 'string') {
+         json = JSON.stringify(json, undefined, 4);
+    }
+    json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+        var cls = 'number';
+        if (/^"/.test(match)) {
+            if (/:$/.test(match)) {
+                cls = 'key';
+            } else {
+                cls = 'string';
+            }
+        } else if (/true|false/.test(match)) {
+            cls = 'boolean';
+        } else if (/null/.test(match)) {
+            cls = 'null';
+        }
+        return '</br><span class="' + cls + '">' + match + '</span>';
+    });
+}
+
     </script>
+
+
+
+<!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" 
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" 
+        crossorigin="anonymous"></script>
+<script src="jquery.json-editor.min.js"></script>-->
+
 </body>
 
 </html>
