@@ -97,8 +97,8 @@ sealed class sample_chat : WebPubSubHub
 {
     private readonly WebPubSubServiceClient<sample_chat> _serviceClient;
     //private readonly string azFuncEndpoint = ConfigurationManager.AppSettings["Azure:AzFunctionCosmosDBInput:ConnectionString"];
-    //private readonly string azFuncEndpoint = "https://gcom-az-function.azurewebsites.net/api/HttpTrigger?code=8cosiPYytyXJjAIwUcmgoAjJxzmiHmKLyweKZJyE_2lOAzFug4AbTw==";
-    private readonly string azFuncEndpoint = "http://localhost:7071/api/HttpTrigger";
+    private readonly string azFuncEndpoint = "https://gcom-az-function.azurewebsites.net/api/HttpTrigger?code=8cosiPYytyXJjAIwUcmgoAjJxzmiHmKLyweKZJyE_2lOAzFug4AbTw==";
+    //private readonly string azFuncEndpoint = "http://localhost:7071/api/HttpTrigger";
 
     public sample_chat(WebPubSubServiceClient<sample_chat> serviceClient)
     {
